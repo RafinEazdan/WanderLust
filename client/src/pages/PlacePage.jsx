@@ -56,5 +56,5 @@ const PlacePage = () => {
     </div>
   );
 };
-//dishdh
+
 export default PlacePage;
