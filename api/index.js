@@ -11,6 +11,7 @@ const multer = require("multer");
 const fs = require("fs");
 const Place = require("./models/Place.js");
 const Booking = require("./models/Booking.js");
+const bodyParser = require('body-parser');
 
 require("dotenv").config();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "fasshjdlfjlasfd";
 
+app.use(bodyParser.json());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
@@ -235,6 +237,14 @@ app.post("/bookings", async (req, res) => {
 app.get("/bookings", async (req, res) => {
   const userData = await getUserDataFromReq(req);
   res.json(await Booking.find({ user: userData.id }).populate("place"));
+});
+
+app.post('/search', (req, res) => {
+  const { query } = req.body;
+  const filteredPlaces = places.filter(Place =>
+    Place.title.toLowerCase().includes(query.toLowerCase())
+  );
+  res.json(filteredPlaces);
 });
 
 app.listen(4000);
