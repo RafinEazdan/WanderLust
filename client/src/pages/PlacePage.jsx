@@ -46,6 +46,24 @@ const PlacePage = () => {
       </div>
 
       <div className="bg-white -mx-8 px-8 py-8 border-t">
+        {/* Perks Section */}
+        <div className="my-4">
+            <h2 className="font-semibold text-2xl mb-2">Perks</h2>
+            <div className="flex flex-wrap gap-2">
+              {place.perks && place.perks.length > 0 ? (
+                place.perks.map((perk, index) => (
+                  <span
+                    key={index}
+                    className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full"
+                  >
+                    {perk}
+                  </span>
+                ))
+              ) : (
+                <p className="text-gray-500">No perks available.</p>
+              )}
+            </div>
+          </div>
         <div>
           <h2 className="font-semibold text-2xl mb-1">Extra Info</h2>
         </div>
@@ -56,5 +74,6 @@ const PlacePage = () => {
     </div>
   );
 };
+
 
 export default PlacePage;

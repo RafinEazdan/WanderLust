@@ -243,31 +243,14 @@ app.get("/bookings", async (req, res) => {
 
 // Search route
 app.get("/search", async (req, res) => {
-  const searchQuery = req.query.q; // Get the search term from the query string
-
-  if (!searchQuery) {
-    return res.status(400).send("Search query is required");
-  }
-
+  const { query } = req.query;
   try {
-    // Perform a case-insensitive search using regular expressions
-    const results = await Place.find({
-      $or: [
-        { name: { $regex: searchQuery, $options: "i" } }, // Search in name field
-        { description: { $regex: searchQuery, $options: "i" } },
-        { adress: { $regex: searchQuery, $options: "i" } }, // Search in description field
-      ],
-    });
-
-    if (results.length > 0) {
-      res.json(results);
-    } else {
-      res.status(404).send("No items found");
-    }
-  } catch (err) {
-    console.log("Error performing search:", err);
-    res.status(500).send("Server error");
+    const results = await Place.find({ address: { $regex: query, $options: "i" } });
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: "Search failed" });
   }
 });
+
 
 app.listen(4000);

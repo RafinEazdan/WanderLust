@@ -24,7 +24,7 @@ const Header = () => {
           </svg>
           <span className="font-bold text-xl">WanderLust</span>
         </Link>
-        <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
+        <div className="">
           <Search/>
         </div>
         <Link
