@@ -11,14 +11,16 @@ const multer = require("multer");
 const fs = require("fs");
 const Place = require("./models/Place.js");
 const Booking = require("./models/Booking.js");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 require("dotenv").config();
 
 app.use(express.json());
 app.use(cookieParser());
 
+
 const bcryptSalt = bcrypt.genSaltSync(10);
+
 const jwtSecret = "fasshjdlfjlasfd";
 
 app.use(bodyParser.json());
@@ -239,12 +241,33 @@ app.get("/bookings", async (req, res) => {
   res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
 
-app.post('/search', (req, res) => {
-  const { query } = req.body;
-  const filteredPlaces = places.filter(Place =>
-    Place.title.toLowerCase().includes(query.toLowerCase())
-  );
-  res.json(filteredPlaces);
+// Search route
+app.get("/search", async (req, res) => {
+  const searchQuery = req.query.q; // Get the search term from the query string
+
+  if (!searchQuery) {
+    return res.status(400).send("Search query is required");
+  }
+
+  try {
+    // Perform a case-insensitive search using regular expressions
+    const results = await Place.find({
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } }, // Search in name field
+        { description: { $regex: searchQuery, $options: "i" } },
+        { adress: { $regex: searchQuery, $options: "i" } }, // Search in description field
+      ],
+    });
+
+    if (results.length > 0) {
+      res.json(results);
+    } else {
+      res.status(404).send("No items found");
+    }
+  } catch (err) {
+    console.log("Error performing search:", err);
+    res.status(500).send("Server error");
+  }
 });
 
 app.listen(4000);

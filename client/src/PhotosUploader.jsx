@@ -123,14 +123,14 @@ const PhotosUploader = ({ addedphotos, onChange }) => {
               </button>
             </div>
           ))}
-        <label className="h-32 cursor-pointer flex items-center gap-1 justify-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
-          <input
+        <label className="h-32 cursor-pointer flex items-center gap-1 justify-center bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
+          {/* <input
             type="file"
             multiple
             className="hidden"
             onChange={uploadPhoto}
-          ></input>
-          <svg
+          ></input> */}
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -142,7 +142,7 @@ const PhotosUploader = ({ addedphotos, onChange }) => {
               clipRule="evenodd"
             />
           </svg>
-          Upload
+          Upload */}
         </label>
       </div>
       <div></div>
