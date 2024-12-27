@@ -253,4 +253,23 @@ app.get("/search", async (req, res) => {
 });
 
 
+app.delete("/bookings/:id", async (req, res) => {
+  const { id } = req.params;
+  const userData = await getUserDataFromReq(req);
+
+  try {
+    const booking = await Booking.findOne({ _id: id, user: userData.id });
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
+    await Booking.findByIdAndDelete(id);
+    res.json({ success: true, message: "Booking canceled successfully" });
+  } catch (error) {
+    console.error("Error canceling booking:", error);
+    res.status(500).json({ error: "Failed to cancel booking" });
+  }
+});
+
+
 app.listen(4000);
