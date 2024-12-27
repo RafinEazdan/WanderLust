@@ -19,22 +19,21 @@ const SearchPlaces = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Search Places by Address</h1>
+    <div className="rounded-2xl p-5" >
+      <h1 className="font-bold">Search Places by Address</h1>
+      <div className="flex w-80 gap-4">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Enter address to search"
-        style={{
-          padding: "10px",
-          width: "300px",
-          marginRight: "10px",
-        }}
+        className="border rounded-2xl"
       />
-      <button onClick={handleSearch} style={{ padding: "10px" }}>
+      <button onClick={handleSearch} className="border rounded-2xl bg-primary text-white" style={{ padding: "8px" }}>
         Search
       </button>
+      </div>
+      
       <div style={{ marginTop: "20px" }}>
         <h2>Search Results</h2>
         {results.length > 0 ? (
