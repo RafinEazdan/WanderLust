@@ -18,7 +18,6 @@ require("dotenv").config();
 app.use(express.json());
 app.use(cookieParser());
 
-
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 const jwtSecret = "fasshjdlfjlasfd";
@@ -246,13 +245,14 @@ app.get("/bookings", async (req, res) => {
 app.get("/search", async (req, res) => {
   const { query } = req.query;
   try {
-    const results = await Place.find({ address: { $regex: query, $options: "i" } });
+    const results = await Place.find({
+      address: { $regex: query, $options: "i" },
+    });
     res.json(results);
   } catch (error) {
     res.status(500).json({ error: "Search failed" });
   }
 });
-
 
 app.delete("/bookings/:id", async (req, res) => {
   const { id } = req.params;
@@ -271,6 +271,5 @@ app.delete("/bookings/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to cancel booking" });
   }
 });
-
 
 app.listen(4000);
