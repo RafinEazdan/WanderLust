@@ -18,7 +18,6 @@ require("dotenv").config();
 app.use(express.json());
 app.use(cookieParser());
 
-
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 const jwtSecret = "fasshjdlfjlasfd";
@@ -242,16 +241,38 @@ app.get("/bookings", async (req, res) => {
   res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
 
+
 // Search route
 app.get("/search", async (req, res) => {
-  const { query } = req.query;
+  const { query, minPrice, maxPrice } = req.query;
+  
   try {
-    const results = await Place.find({ address: { $regex: query, $options: "i" } });
+    // Build the search filter
+    let searchFilter = {
+      address: { $regex: query, $options: "i" }
+    };
+    
+    // Add price filter if provided
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      searchFilter.price = {};
+      
+      if (minPrice !== undefined) {
+        searchFilter.price.$gte = Number(minPrice);
+      }
+      
+      if (maxPrice !== undefined) {
+        searchFilter.price.$lte = Number(maxPrice);
+      }
+    }
+    
+    const results = await Place.find(searchFilter);
     res.json(results);
   } catch (error) {
     res.status(500).json({ error: "Search failed" });
   }
 });
+
+
 
 
 app.delete("/bookings/:id", async (req, res) => {
@@ -271,6 +292,5 @@ app.delete("/bookings/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to cancel booking" });
   }
 });
-
 
 app.listen(4000);

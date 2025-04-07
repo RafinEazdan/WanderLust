@@ -21,9 +21,8 @@ const Search = () => {
 
   return (
     <div className="flex gap-2">
-
       <Link className="bg-primary text-white rounded-xl p-3" to="/search">
-        Search by Location
+        Search Places
       </Link>
     </div>
   );
